@@ -5,12 +5,14 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use 'app/styles/ollama-chat-theme-colors' as ollamaChatTheme;
 
 html {
   @include mat.theme((
     color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      primary: ollamaChatTheme.$primary-palette,
+      secondary: ollamaChatTheme.$secondary-palette,
+      tertiary: ollamaChatTheme.$tertiary-palette,
     ),
     typography: Roboto,
     density: 0,
@@ -37,3 +39,13 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/**
+✔ What HEX color should be used to generate the M3 theme? It will represent your primary color palette. (ex. #ffffff) #ff7f50  /coral
+✔ What HEX color should be used represent the secondary color palette? (Leave blank to use generated colors from Material) #228b22 /forrestgreen
+✔ What HEX color should be used represent the tertiary color palette? (Leave blank to use generated colors from Material) #00bfff /deepskyblue
+✔ What HEX color should be used represent the neutral color palette? (Leave blank to use generated colors from Material) #fffaf0 /floralwhite
+✔ What HEX color should be used represent the neutral variant palette? (Leave blank to use generated colors from Material) #f5f5f5 /whitesmoke
+✔ What HEX color should be used represent the error palette? (Leave blank to use generated colors from Material) #ac1010 /darkred
+ */
