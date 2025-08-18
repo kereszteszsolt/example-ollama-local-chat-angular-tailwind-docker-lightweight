@@ -41,6 +41,15 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+:root {
+  --primray-color: coral;
+  --primary-caption-color: antiquewhite;
+
+  @include mat.toolbar-overrides((
+    container-background-color: coral,
+    container-text-color: antiquewhite,
+  ));
+}
 
 /**
 ✔ What HEX color should be used to generate the M3 theme? It will represent your primary color palette. (ex. #ffffff) #ff7f50  /coral
