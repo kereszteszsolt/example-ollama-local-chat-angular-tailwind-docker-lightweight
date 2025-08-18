@@ -6,7 +6,19 @@
   <span>Ollama Chat</span>
   <span class="example-spacer"></span>
   <div>
-    <p>model</p>
+    <button mat-button [matMenuTriggerFor]="modelMenu">
+      <mat-icon>arrow_drop_down</mat-icon>
+      {{ currentModel()?.name || 'Select Model' }}
+    </button>
+    <mat-menu #modelMenu="matMenu">
+      @for (model of availableModels(); track model.name) {
+        <button
+          mat-menu-item
+          (click)="onModelChange(model.model)">
+          {{ model.name }}
+        </button>
+      }
+    </mat-menu>
   </div>
   <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
