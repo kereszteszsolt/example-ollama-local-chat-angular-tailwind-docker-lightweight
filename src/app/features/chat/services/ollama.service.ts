@@ -118,4 +118,9 @@ export class OllamaService {
     }
   }
 
+  newChat () {
+    this.abortChatMessage();
+    this.messageHistory.set([]);
+    this.currentResponse.set('');
+  }
 }

@@ -24,4 +24,8 @@ export class ChatPageComponent {
   onAbortMessage() {
     this.ollamaService.abortChatMessage();
   }
+
+  onNewChat() {
+    this.ollamaService.newChat();
+  }
 }

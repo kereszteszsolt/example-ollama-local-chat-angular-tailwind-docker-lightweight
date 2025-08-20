@@ -9,10 +9,13 @@
   </div>
   <div class="flex flex-row justify-between gap-2">
     <div>
+      <button mat-button (click)="onNewChat()"><mat-icon>add</mat-icon>New chat</button>
       <button mat-button (click)="onClearInput()"><mat-icon>cleaning_services</mat-icon> Clear</button>
       <button mat-button><mat-icon>description</mat-icon> System prompts</button>
     </div>
-    <button mat-icon-button (click)="onSendCurrentMessage()"><mat-icon>send</mat-icon></button>
-    <button mat-icon-button (click)="onAbort()"><mat-icon>stop</mat-icon></button>
-  </div>
+    <div>
+      <button mat-icon-button (click)="onSendCurrentMessage()"><mat-icon>send</mat-icon></button>
+      <button mat-icon-button (click)="onAbort()"><mat-icon>stop</mat-icon></button>
+    </div>
+    </div>
 </div>

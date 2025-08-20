@@ -42,4 +42,9 @@ export class ChatInputComponent {
   onAbort() {
     this.abort.emit();
   }
+
+  onNewChat() {
+    this.newChat.emit();
+    this.onClearInput();
+  }
 }
