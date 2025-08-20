@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class ChatInputComponent {
   @Output() sendMessage: EventEmitter<string> = new EventEmitter<string>();
+  @Output() abort: EventEmitter<void> = new EventEmitter<void>();
+  @Output() newChat: EventEmitter<void> = new EventEmitter<void>();
 
   currentMessage: string = '';
 
@@ -31,5 +33,13 @@ export class ChatInputComponent {
       event.preventDefault();
       this.onSendCurrentMessage();
     }
+  }
+
+  onClearInput() {
+    this.currentMessage = '';
+  }
+
+  onAbort() {
+    this.abort.emit();
   }
 }

@@ -20,4 +20,8 @@ export class ChatPageComponent {
   onSendMessage(message: string) {
     this.ollamaService.sendChatMessage(message);
   }
+
+  onAbortMessage() {
+    this.ollamaService.abortChatMessage();
+  }
 }

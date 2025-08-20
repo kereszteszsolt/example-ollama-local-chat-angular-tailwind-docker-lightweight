@@ -3,14 +3,17 @@
     <div class="flex flex-1 overflow-hidden">
       <div class="flex-1 flex flex-col w-full overflow-y-auto gap-2.5 p-2.5">
         @for (message of messages(); track message) {
-          <ollama-chat-chat-message [message]="message" />
+          <ollama-chat-chat-message [message]="message"/>
         }
         <ollama-chat-chat-message [message]="{
           role: 'assistant',
           content: partialResponse(),
-        }" />
+        }"/>
       </div>
     </div>
   }
-  <ollama-chat-chat-input (sendMessage)="onSendMessage($event)"/>
+  <ollama-chat-chat-input
+    (sendMessage)="onSendMessage($event)"
+    (abort)="onAbortMessage()"
+  />
 </div>
