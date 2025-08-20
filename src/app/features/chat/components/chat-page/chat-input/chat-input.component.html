@@ -1,7 +1,9 @@
-<div class="border border-gray-200 rounded-lg p-4 bg-white shadow-md text-lg font-medium flex flex-col gap-4">
+<div class="border border-gray-200 rounded-lg p-4 bg-white shadow-md text-lg flex flex-col gap-4">
   <div>
     <textarea
       placeholder="Type your message here..."
+      [(ngModel)]="currentMessage"
+      (keypress)="onKeyPress($event)"
       class="w-full resize-none"
     ></textarea>
   </div>

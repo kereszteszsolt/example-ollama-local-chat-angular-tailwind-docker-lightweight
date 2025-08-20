@@ -1,4 +1,13 @@
 <div class="w-[789px] mx-auto py-5 flex flex-col justify-center" style="height: calc(100vh - 64px);">
-  <div class="flex flex-1">messages</div>
-  <ollama-chat-chat-input />
+  @if (messages().length > 0 || partialResponse()) {
+    <div class="flex flex-1">
+      <div class="flex-1 flex flex-col w-full overflow-y-auto gap-2.5 p-2.5">
+        @for (message of messages(); track message) {
+          <div>{{ message.content }}</div>
+        }
+        <div class="text-[16px] text-black">{{ partialResponse() }}</div>
+      </div>
+    </div>
+  }
+  <ollama-chat-chat-input (sendMessage)="onSendMessage($event)"/>
 </div>
