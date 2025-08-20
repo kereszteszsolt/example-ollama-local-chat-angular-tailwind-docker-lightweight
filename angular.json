@@ -38,11 +38,14 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css",
+              "node_modules/prismjs/themes/prism.css"
             ],
             "scripts": [
               "node_modules/katex/dist/katex.min.js",
-              "node_modules/katex/dist/contrib/auto-render.min.js"
+              "node_modules/katex/dist/contrib/auto-render.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js",
+              "node_modules/prismjs/prism.js"
             ]
           },
           "configurations": {
@@ -101,11 +104,14 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css",
+              "node_modules/prismjs/themes/prism.css"
             ],
             "scripts": [
               "node_modules/katex/dist/katex.min.js",
-              "node_modules/katex/dist/contrib/auto-render.min.js"
+              "node_modules/katex/dist/contrib/auto-render.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js",
+              "node_modules/prismjs/prism.js"
             ]
           }
         }
