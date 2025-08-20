@@ -4,6 +4,10 @@
       ? 'ml-10 border-1 rounded-tl-lg rounded-tr-lg rounded-bl-lg text-right bg-gray-100 w-auto p-2'
       : 'mr-10 w-full'"
   >
-    {{ message.content }}
+    <markdown
+      [data]="message.content"
+      [katex]="true"
+      [mermaid]="true"
+    ></markdown>
   </div>
 </div>

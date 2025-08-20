@@ -5,7 +5,10 @@
         @for (message of messages(); track message) {
           <ollama-chat-chat-message [message]="message" />
         }
-        <div class="text-[16px] text-black">{{ partialResponse() }}</div>
+        <ollama-chat-chat-message [message]="{
+          role: 'assistant',
+          content: partialResponse(),
+        }" />
       </div>
     </div>
   }
