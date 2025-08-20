@@ -1,4 +1,4 @@
-import { Component, inject, Input, SecurityContext } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Message } from '../../../models/message.model';
 import { NgClass } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';

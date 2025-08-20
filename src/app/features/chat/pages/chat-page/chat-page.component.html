@@ -1,6 +1,6 @@
 <div class="w-[789px] mx-auto py-5 flex flex-col justify-center" style="height: calc(100vh - 64px);">
   @if (messages().length > 0 || partialResponse()) {
-    <div class="flex flex-1">
+    <div class="flex flex-1 overflow-hidden">
       <div class="flex-1 flex flex-col w-full overflow-y-auto gap-2.5 p-2.5">
         @for (message of messages(); track message) {
           <ollama-chat-chat-message [message]="message" />
