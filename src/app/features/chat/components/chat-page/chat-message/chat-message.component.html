@@ -1,1 +1,9 @@
-<p>chat-message works!</p>
+<div [ngClass]="message.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
+  <div
+    [ngClass]="message.role === 'user'
+      ? 'ml-10 border-1 rounded-tl-lg rounded-tr-lg rounded-bl-lg text-right bg-gray-100 w-auto p-2'
+      : 'mr-10 w-full'"
+  >
+    {{ message.content }}
+  </div>
+</div>

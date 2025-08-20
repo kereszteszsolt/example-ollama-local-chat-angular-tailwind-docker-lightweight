@@ -3,7 +3,7 @@
     <div class="flex flex-1">
       <div class="flex-1 flex flex-col w-full overflow-y-auto gap-2.5 p-2.5">
         @for (message of messages(); track message) {
-          <div>{{ message.content }}</div>
+          <ollama-chat-chat-message [message]="message" />
         }
         <div class="text-[16px] text-black">{{ partialResponse() }}</div>
       </div>
