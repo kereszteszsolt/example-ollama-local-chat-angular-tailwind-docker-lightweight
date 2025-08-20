@@ -16,6 +16,7 @@ export class ChatPageComponent {
   ollamaService = inject(OllamaService);
   messages = this.ollamaService.messageHistoryList;
   partialResponse = this.ollamaService.partialResponse;
+  isLoading = this.ollamaService.isLoadingResponse;
 
   onSendMessage(message: string) {
     this.ollamaService.sendChatMessage(message);

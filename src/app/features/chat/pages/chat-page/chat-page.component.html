@@ -13,6 +13,7 @@
     </div>
   }
   <ollama-chat-chat-input
+    [isLoading]="isLoading()"
     (sendMessage)="onSendMessage($event)"
     (abort)="onAbortMessage()"
     (newChat)="onNewChat()"

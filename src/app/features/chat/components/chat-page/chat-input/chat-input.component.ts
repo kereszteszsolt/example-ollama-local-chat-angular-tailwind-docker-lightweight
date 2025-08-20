@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './chat-input.component.scss'
 })
 export class ChatInputComponent {
+  @Input({required: true}) isLoading: boolean = false;
   @Output() sendMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() abort: EventEmitter<void> = new EventEmitter<void>();
   @Output() newChat: EventEmitter<void> = new EventEmitter<void>();
