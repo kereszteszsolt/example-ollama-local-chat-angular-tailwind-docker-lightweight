@@ -39,13 +39,19 @@
             "styles": [
               "src/styles.scss",
               "node_modules/katex/dist/katex.min.css",
-              "node_modules/prismjs/themes/prism.css"
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.css",
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.css"
             ],
             "scripts": [
               "node_modules/katex/dist/katex.min.js",
               "node_modules/katex/dist/contrib/auto-render.min.js",
               "node_modules/mermaid/dist/mermaid.min.js",
-              "node_modules/prismjs/prism.js"
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
+              "node_modules/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js"
             ]
           },
           "configurations": {
@@ -105,13 +111,17 @@
             "styles": [
               "src/styles.scss",
               "node_modules/katex/dist/katex.min.css",
-              "node_modules/prismjs/themes/prism.css"
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.css"
             ],
             "scripts": [
               "node_modules/katex/dist/katex.min.js",
               "node_modules/katex/dist/contrib/auto-render.min.js",
               "node_modules/mermaid/dist/mermaid.min.js",
-              "node_modules/prismjs/prism.js"
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
+              "node_modules/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.min.js"
             ]
           }
         }
