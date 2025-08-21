@@ -1,19 +1,20 @@
 <div class="border border-gray-200 rounded-lg p-4 bg-white shadow-md text-lg flex flex-col gap-4">
-  <div>
+  <div class="max-h-[350px] overflow-y-auto">
     <textarea
+      cdkTextareaAutosize
       placeholder="Type your message here..."
       [(ngModel)]="currentMessage"
       (keypress)="onKeyPress($event)"
-      class="w-full resize-none"
+      class="w-full resize-none focus:outline-none"
       [disabled]="isLoading"
     ></textarea>
   </div>
   <div class="flex flex-row justify-between gap-2">
     <div>
-      <button mat-button (click)="onNewChat()" [disabled]="isLoading">
+      <button mat-button (click)="onNewChat()" [disabled]="isLoading || !hasHistory">
         <mat-icon>add</mat-icon>New chat
       </button>
-      <button mat-button (click)="onClearInput()" [disabled]="isLoading">
+      <button mat-button (click)="onClearInput()" [disabled]="isLoading || !currentMessage.trim()">
         <mat-icon>cleaning_services</mat-icon> Clear
       </button>
       <button mat-button [disabled]="isLoading">

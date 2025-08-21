@@ -14,6 +14,7 @@
   }
   <ollama-chat-chat-input
     [isLoading]="isLoading()"
+    [hasHistory]="messages().length > 0"
     (sendMessage)="onSendMessage($event)"
     (abort)="onAbortMessage()"
     (newChat)="onNewChat()"

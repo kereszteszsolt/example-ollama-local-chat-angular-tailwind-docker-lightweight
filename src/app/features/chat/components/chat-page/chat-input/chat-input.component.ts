@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'ollama-chat-chat-input',
@@ -9,13 +10,15 @@ import { FormsModule } from '@angular/forms';
     MatIconButton,
     MatIcon,
     MatButton,
-    FormsModule
+    FormsModule,
+    CdkTextareaAutosize
   ],
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
 })
 export class ChatInputComponent {
   @Input({required: true}) isLoading: boolean = false;
+  @Input({required: true}) hasHistory: boolean = false;
   @Output() sendMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() abort: EventEmitter<void> = new EventEmitter<void>();
   @Output() newChat: EventEmitter<void> = new EventEmitter<void>();
