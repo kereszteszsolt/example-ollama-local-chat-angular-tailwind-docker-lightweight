@@ -2,14 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Message } from '../../../models/message.model';
 import { NgClass } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
-import { MatButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TimeSpentPipe } from '../../../pipes/time-spent/time-spent.pipe';
 
 @Component({
   selector: 'ollama-chat-chat-message',
   imports: [
     NgClass,
     MarkdownComponent,
-    MatButton
+    MatIconButton,
+    MatIcon,
+    TimeSpentPipe
   ],
   templateUrl: './chat-message.component.html',
   styleUrl: './chat-message.component.scss'

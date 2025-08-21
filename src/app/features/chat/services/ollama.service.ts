@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { AiModelDto } from '../models/ai-model.model';
 import { OllamaApiService } from './ollama-api.service';
-import { ReqMessage } from '../models/message.model';
+import { Message, ReqMessage } from '../models/message.model';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 export class OllamaService {
   private availableModels = signal<AiModelDto[]>([]);
   private selectedModel = signal<AiModelDto | null>(null);
-  private messageHistory = signal<ReqMessage[]>([]);
+  private messageHistory = signal<Message[]>([]);
   private currentResponse = signal<string>('');
   private activeSystemPrompt = signal<string>('');
   private chatSubscription: Subscription | null = null;
@@ -92,7 +92,8 @@ export class OllamaService {
           console.log('OllamaService: Response completed 4', event);
           this.messageHistory.set([...this.messageHistory(), {
             role: 'assistant',
-            content: this.currentResponse()
+            content: this.currentResponse(),
+            total_duration: this.getTotalDuration(event.body)
           }]);
           this.currentResponse.set('');
           this.loadingResponse.set(false);
@@ -116,6 +117,21 @@ export class OllamaService {
     });
 
     return jsonObjects.join('');
+  }
+
+  getTotalDuration(responseBody: string): number {
+    const lines = responseBody.split('\n');
+    for (let i = lines.length - 1; i >= 0; i--) {
+      try {
+        const obj = JSON.parse(lines[i]);
+        if ('total_duration' in obj) {
+          return obj.total_duration;
+        }
+      } catch {
+        // Ignore parse errors
+      }
+    }
+    return -1;
   }
 
   abortChatMessage() {

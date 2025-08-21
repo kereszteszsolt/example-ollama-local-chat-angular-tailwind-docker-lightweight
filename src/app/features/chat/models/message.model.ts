@@ -4,5 +4,5 @@ export interface ReqMessage {
 }
 
 export interface Message extends ReqMessage {
-  duration?: number;
+  total_duration?: number;
 }
