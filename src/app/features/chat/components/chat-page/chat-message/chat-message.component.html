@@ -10,5 +10,8 @@
       mermaid
       [mermaidOptions] ="{ theme: 'forest' }"
     ></markdown>
+    @if (message.role === 'assistant' && !isLoading) {
+      <button mat-button (click)="copyContentToClipboard(message.content)">Copy to Clipboard</button>
+    }
   </div>
 </div>

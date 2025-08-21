@@ -2,20 +2,30 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Message } from '../../../models/message.model';
 import { NgClass } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'ollama-chat-chat-message',
   imports: [
     NgClass,
-    MarkdownComponent
+    MarkdownComponent,
+    MatButton
   ],
   templateUrl: './chat-message.component.html',
   styleUrl: './chat-message.component.scss'
 })
 export class ChatMessageComponent implements OnInit {
   @Input({ required: true }) message!: Message;
+  @Input({ required: true }) isLoading: boolean = false;
 
   ngOnInit(): void {
     (window as any).Prism.plugins.autoloader.languages_path = 'prismjs-components/';
+  }
+
+  copyContentToClipboard(content: string): void {
+    navigator.clipboard.writeText(content).then(r => 'Copied to clipboard!').catch(err => {
+      console.error('Failed to copy text: ', err);
+      alert('Failed to copy text to clipboard.');
+    });
   }
 }
