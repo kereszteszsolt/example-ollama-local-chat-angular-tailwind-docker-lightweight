@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'ollama-chat-chat-input',
   imports: [
     MatIconButton,
     MatIcon,
-    MatButton,
     FormsModule,
-    CdkTextareaAutosize
+    CdkTextareaAutosize,
+    MatTooltip
   ],
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'

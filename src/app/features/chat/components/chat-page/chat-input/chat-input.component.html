@@ -8,27 +8,27 @@
     [disabled]="isLoading"
   ></textarea>
   <div class="flex flex-row justify-between gap-2">
-    <div>
-      <button mat-button (click)="onNewChat()" [disabled]="isLoading || !hasHistory">
-        <mat-icon>add</mat-icon>New chat
+    <div class="flex flex-row gap-2">
+      <button mat-icon-button (click)="onNewChat()" [disabled]="isLoading || !hasHistory" matTooltip="Start new chat">
+        <mat-icon class="text-xs">add</mat-icon>
       </button>
-      <button mat-button (click)="onClearInput()" [disabled]="isLoading || !currentMessage.trim()">
-        <mat-icon>cleaning_services</mat-icon> Clear
+      <button mat-icon-button (click)="onClearInput()" [disabled]="isLoading || !currentMessage.trim()" matTooltip="Clear input">
+        <mat-icon class="text-xs">cleaning_services</mat-icon>
       </button>
-      <button mat-button [disabled]="isLoading">
-        <mat-icon>description</mat-icon> System prompts
+      <button mat-icon-button [disabled]="isLoading" matTooltip="Show system prompts">
+        <mat-icon class="text-xs">description</mat-icon>
       </button>
     </div>
     <div>
       @if (isLoading) {
-        <button mat-icon-button (click)="onAbort()">
-          <mat-icon>stop</mat-icon>
+        <button mat-icon-button (click)="onAbort()" matTooltip="Abort">
+          <mat-icon class="text-xs">stop</mat-icon>
         </button>
       } @else {
-        <button mat-icon-button (click)="onSendCurrentMessage()">
-          <mat-icon>send</mat-icon>
+        <button mat-icon-button (click)="onSendCurrentMessage()" matTooltip="Send message">
+          <mat-icon class="text-xs">send</mat-icon>
         </button>
       }
     </div>
-    </div>
+  </div>
 </div>

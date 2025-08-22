@@ -5,6 +5,7 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { TimeSpentPipe } from '../../../pipes/time-spent/time-spent.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'ollama-chat-chat-message',
@@ -13,7 +14,8 @@ import { TimeSpentPipe } from '../../../pipes/time-spent/time-spent.pipe';
     MarkdownComponent,
     MatIconButton,
     MatIcon,
-    TimeSpentPipe
+    TimeSpentPipe,
+    MatTooltip
   ],
   templateUrl: './chat-message.component.html',
   styleUrl: './chat-message.component.scss'
