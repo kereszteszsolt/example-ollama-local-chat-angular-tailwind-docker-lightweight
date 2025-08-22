@@ -11,7 +11,7 @@
       mermaid
       [mermaidOptions] ="{ theme: 'forest' }"
     ></markdown>
-    @if (message.role === 'assistant' && !isLoading) {
+    @if (message.role === 'assistant' && !hideToolbar) {
       <div class="flex flex-row flex-start gap-2 items-center text-xs">
         <button mat-icon-button class="p-1" (click)="copyContentToClipboard(message.content)" matTooltip="Copy to clipboard">
           <mat-icon class="text-xs">content_copy</mat-icon>

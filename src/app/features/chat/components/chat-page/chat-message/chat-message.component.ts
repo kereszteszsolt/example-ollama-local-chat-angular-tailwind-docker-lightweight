@@ -22,7 +22,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 })
 export class ChatMessageComponent implements OnInit {
   @Input({ required: true }) message!: Message;
-  @Input({ required: true }) isLoading: boolean = false;
+  @Input({ required: true }) hideToolbar: boolean = false;
   @Output() regenerate: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit(): void {
