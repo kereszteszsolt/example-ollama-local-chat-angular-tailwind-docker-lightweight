@@ -3,7 +3,11 @@
     <div class="flex flex-1 overflow-hidden">
       <div class="flex-1 flex flex-col w-full overflow-y-auto gap-2.5 p-2.5">
         @for (message of messages(); track message) {
-          <ollama-chat-chat-message [message]="message" [isLoading]="isLoading()"/>
+          <ollama-chat-chat-message
+            [message]="message"
+            [isLoading]="isLoading()"
+            (regenerate)="onRegenerateMessage($event)"
+          />
         }
         @if (partialResponse()) {
           <ollama-chat-chat-message

@@ -20,7 +20,10 @@ export class OllamaService {
     { role: 'system', content: 'You are a concise, accurate AI assistant for local Ollama apps.' },
     { role: 'system', content: 'Respond in Markdown (ngx-markdown v20.0.0).' },
     { role: 'system', content: 'By default use Mermaid 11.10.0 for diagrams (inline unless code block requested).' },
-    { role: 'system', content: 'By default use KaTeX 0.16.22 for math and matrices inline unless code block requested).' },
+    {
+      role: 'system',
+      content: 'By default use KaTeX 0.16.22 for math and matrices inline unless code block requested).'
+    },
     { role: 'system', content: 'Write formulas or diagrams only when requested or necessary.' },
     { role: 'system', content: 'If unknown, reply: "I do not know".' },
     { role: 'system', content: 'If unclear, ask for clarification.' }
@@ -31,14 +34,14 @@ export class OllamaService {
 
   loadModels() {
     return this.ollamaApiService.getModels().subscribe((response) => {
-      this.availableModels.set(response.models)
+      this.availableModels.set(response.models);
       if (response.models.length > 0) {
         this.selectedModel.set(response.models[0]);
         console.warn('Current model set to', response.models[0]);
       } else {
         console.warn('OllamaService: No AI models found');
       }
-    })
+    });
   }
 
   get aiModels() {
@@ -66,11 +69,19 @@ export class OllamaService {
     this.selectedModel.set(model);
   }
 
+  regenerateResponse(ref_id: string) {
+    let message = this.messageHistory().find(m => m.req_id === ref_id);
+    if (message) {
+      this.sendChatMessage(message.content);
+    }
+  }
+
   sendChatMessage(userInput: string) {
+    const req_id = crypto.randomUUID();
     this.loadingResponse.set(true);
     let responseMessage = '';
     // Add user message to history
-    this.messageHistory.set([...this.messageHistory(), { role: 'user', content: userInput }]);
+    this.messageHistory.set([...this.messageHistory(), { role: 'user', content: userInput, req_id: req_id }]);
     let messages: ReqMessage[] = [];
     // Add system prompt if present
     if (this.activeSystemPrompt()) {
@@ -93,7 +104,8 @@ export class OllamaService {
           this.messageHistory.set([...this.messageHistory(), {
             role: 'assistant',
             content: this.currentResponse(),
-            total_duration: this.getTotalDuration(event.body)
+            total_duration: this.getTotalDuration(event.body),
+            ref_id: req_id
           }]);
           this.currentResponse.set('');
           this.loadingResponse.set(false);
@@ -102,7 +114,7 @@ export class OllamaService {
       error: (error) => {
         this.loadingResponse.set(false);
         console.error('Error sending chat message:', error);
-      },
+      }
     });
   }
 
@@ -143,7 +155,7 @@ export class OllamaService {
     }
   }
 
-  newChat () {
+  newChat() {
     this.abortChatMessage();
     this.messageHistory.set([]);
     this.currentResponse.set('');

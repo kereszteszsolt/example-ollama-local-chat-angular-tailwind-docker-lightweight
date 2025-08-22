@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Message } from '../../../models/message.model';
 import { NgClass } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
@@ -21,6 +21,7 @@ import { TimeSpentPipe } from '../../../pipes/time-spent/time-spent.pipe';
 export class ChatMessageComponent implements OnInit {
   @Input({ required: true }) message!: Message;
   @Input({ required: true }) isLoading: boolean = false;
+  @Output() regenerate: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit(): void {
     (window as any).Prism.plugins.autoloader.languages_path = 'prismjs-components/';
@@ -31,5 +32,13 @@ export class ChatMessageComponent implements OnInit {
       console.error('Failed to copy text: ', err);
       alert('Failed to copy text to clipboard.');
     });
+  }
+
+  onRegenerate(): void {
+    if (this.message.ref_id) {
+      this.regenerate.emit(this.message.ref_id);
+    } else {
+      console.warn('Message ID is not available for regeneration.');
+    }
   }
 }

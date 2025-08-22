@@ -1,5 +1,6 @@
 <div [ngClass]="message.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
   <div
+    class="text-[16px]"
     [ngClass]="message.role === 'user'
       ? 'ml-10 border-1 rounded-tl-lg rounded-tr-lg rounded-bl-lg text-right bg-gray-100 w-auto p-2'
       : 'mr-10 w-full'"
@@ -15,7 +16,7 @@
         <button mat-icon-button (click)="copyContentToClipboard(message.content)">
           <mat-icon>content_copy</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onRegenerate()">
           <mat-icon>refresh</mat-icon>
         </button>
         <span>Time spent: {{message.total_duration ?? 0  | timeSpent}}</span>

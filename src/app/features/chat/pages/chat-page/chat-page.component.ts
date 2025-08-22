@@ -29,4 +29,8 @@ export class ChatPageComponent {
   onNewChat() {
     this.ollamaService.newChat();
   }
+
+  onRegenerateMessage(ref_id: string) {
+    this.ollamaService.regenerateResponse(ref_id);
+  }
 }
