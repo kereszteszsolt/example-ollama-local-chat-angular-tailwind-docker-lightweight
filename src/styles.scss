@@ -44,6 +44,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: h
 :root {
   --primray-color: coral;
   --primary-caption-color: antiquewhite;
+  --neutral-color: whitesmoke;
+  --neutral-color-variant: floralwhite;
 
   @include mat.toolbar-overrides((
     container-background-color: coral,
