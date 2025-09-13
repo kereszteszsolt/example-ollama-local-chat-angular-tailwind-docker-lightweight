@@ -10,6 +10,7 @@ export interface Message extends ReqMessage {
 }
 
 export interface SystemMessage extends ReqMessage {
+  sys_msg_id: string;
   role: 'system';
   content: string;
   active: boolean;

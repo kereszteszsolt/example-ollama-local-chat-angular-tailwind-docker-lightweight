@@ -12,6 +12,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @Component({
   selector: 'ollama-chat-system-prompt-settings',
@@ -28,6 +30,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatCheckboxModule,
     MatTooltipModule,
     MatIconButton,
+    MatExpansionModule,
+    MatTabsModule,
   ],
   templateUrl: './system-prompt-settings.component.html',
   styleUrl: './system-prompt-settings.component.scss',
@@ -36,11 +40,15 @@ export class SystemPromptSettingsComponent implements OnInit {
   dialogRef = inject(MatDialogRef<SystemPromptSettingsComponent>);
   ollamaService = inject(OllamaService);
   snackBar = inject(MatSnackBar);
-
   systemPrompts: SystemMessage[] = [];
   folders: string[] = [];
   newMessage: Partial<SystemMessage> = {role: 'system', content: '', active: true, folder: ''};
-  unsavedChanges = false;
+  activeTab = 0;
+  editedFolderName: string = '';
+
+  editFolderName(folder: string) {
+    this.editedFolderName = folder;
+  }
 
   ngOnInit() {
     this.loadPrompts();
@@ -59,54 +67,63 @@ export class SystemPromptSettingsComponent implements OnInit {
 
   addMessage() {
     if (!this.newMessage.content || !this.newMessage.folder) return;
-    this.systemPrompts = [...this.systemPrompts, this.newMessage as SystemMessage];
+    const message: SystemMessage = {
+      sys_msg_id: crypto.randomUUID(),
+      role: 'system',
+      content: this.newMessage.content!,
+      active: true,
+      folder: this.newMessage.folder!,
+    };
+    this.systemPrompts = [...this.systemPrompts, message];
     this.updateFolders();
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
     this.newMessage = {role: 'system', content: '', active: true, folder: ''};
-    this.unsavedChanges = true;
   }
 
   removeMessage(index: number) {
     this.systemPrompts = this.systemPrompts.filter((_, i) => i !== index);
     this.updateFolders();
-    this.unsavedChanges = true;
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
   toggleActive(index: number) {
     this.systemPrompts = this.systemPrompts.map((p, i) =>
       i === index ? {...p, active: !p.active} : p
     );
-    this.unsavedChanges = true;
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
   toggleAllActive(folder: string, active: boolean) {
     this.systemPrompts = this.systemPrompts.map(p =>
       p.folder === folder ? {...p, active} : p
     );
-    this.unsavedChanges = true;
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
   clearFolder(folder: string) {
     this.systemPrompts = this.systemPrompts.filter(p => p.folder !== folder);
     this.updateFolders();
-    this.unsavedChanges = true;
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
-  save() {
+  updateFolderName(folder: string, newName: string) {
+    if (!newName.trim()) return;
+    this.systemPrompts = this.systemPrompts.map(p =>
+      p.folder === folder ? {...p, folder: newName} : p
+    );
+    this.updateFolders();
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
-    this.unsavedChanges = false;
-    this.snackBar.open('Saved!', 'Close', {duration: 2000});
   }
 
   closeDialog() {
-    if (this.unsavedChanges) {
-      this.snackBar.open('You have unsaved changes!', 'Close', {duration: 3000});
-      return;
-    }
     this.dialogRef.close();
   }
 
-  // TODO: Implement import from CSV/Excel
   importFromCSV(event: Event) {
-    // Handle file upload and parsing
+    // TODO: Implement import from CSV/Excel
+  }
+
+  importFromJSON(event: Event) {
+    // TODO: Implement import from JSON
   }
 }

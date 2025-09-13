@@ -59,7 +59,6 @@ export class ChatInputComponent {
 
   openSystemPromptSettings() {
     const dialogRef = this.dialog.open(SystemPromptSettingsComponent, {
-      width: '700px',
       disableClose: false,
       autoFocus: false,
       restoreFocus: false
