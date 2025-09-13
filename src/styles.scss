@@ -1,4 +1,3 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -36,10 +35,18 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100vh; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: hidden; }
+html, body {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+}
 
 :root {
   --primray-color: coral;
@@ -50,6 +57,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: h
   @include mat.toolbar-overrides((
     container-background-color: coral,
     container-text-color: antiquewhite,
+  ));
+
+  @include mat.dialog-overrides((
+    container-min-width: 786px,
   ));
 }
 

@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SystemMessage} from '../../models/message.model';
 import {OllamaService} from '../../services/ollama.service';
@@ -14,7 +14,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
-import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {MatDivider} from '@angular/material/divider';
 
 @Component({
   selector: 'ollama-chat-system-prompt-settings',
@@ -28,11 +28,12 @@ import {MatTab, MatTabGroup} from '@angular/material/tabs';
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
-    MatTab,
-    MatTabGroup,
     MatButton,
     MatDialogContent,
-    MatExpansionPanelDescription
+    MatExpansionPanelDescription,
+    MatDialogTitle,
+    MatDialogActions,
+    MatDivider
   ],
   templateUrl: './system-prompt-settings.component.html',
   styleUrl: './system-prompt-settings.component.scss',
@@ -43,7 +44,6 @@ export class SystemPromptSettingsComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   systemPrompts: (SystemMessage & { editing?: boolean })[] = [];
   folders: string[] = [];
-  activeTab = 0;
   editedFolderName: string = '';
 
   ngOnInit() {
