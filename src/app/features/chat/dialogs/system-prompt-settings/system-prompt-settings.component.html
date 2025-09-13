@@ -1,11 +1,7 @@
 <mat-dialog-content class="p-4 max-w-3xl">
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-xl font-bold">System Prompts</h2>
-    <button
-      mat-icon-button
-      matTooltip="Close"
-      (click)="closeDialog()"
-    >
+    <button mat-icon-button matTooltip="Close" (click)="closeDialog()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -13,75 +9,105 @@
   <mat-tab-group [(selectedIndex)]="activeTab">
     <mat-tab label="Manual">
       <div class="mb-4 p-3 border rounded-lg">
-        <h3 class="font-semibold mb-2">Add New Message</h3>
+        <h3 class="font-semibold mb-2">Add New Prompt</h3>
         <div class="flex flex-col gap-2">
-          <mat-form-field>
-            <mat-label>Folder</mat-label>
-            <input matInput [(ngModel)]="newMessage.folder" placeholder="Folder name">
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Content</mat-label>
-            <textarea matInput [(ngModel)]="newMessage.content" placeholder="Message content"></textarea>
-          </mat-form-field>
-          <button mat-raised-button color="primary" (click)="addMessage()">Add</button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addNewPromptFolder()"
+          >
+            New Prompt Folder
+          </button>
         </div>
       </div>
     </mat-tab>
     <mat-tab label="Import JSON">
       <div class="mt-4">
-        <input type="file" (change)="importFromJSON($event)" accept=".json" />
+        <input type="file" (change)="importFromJSON($event)" accept=".json"/>
       </div>
     </mat-tab>
     <mat-tab label="Import CSV">
       <div class="mt-4">
-        <input type="file" (change)="importFromCSV($event)" accept=".csv,.xlsx" />
+        <input type="file" (change)="importFromCSV($event)" accept=".csv,.xlsx"/>
       </div>
     </mat-tab>
   </mat-tab-group>
 
-  <div *ngFor="let folder of folders" class="mb-4">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <input
-            matInput
-            [ngModel]="folder"
-            (ngModelChange)="editedFolderName = $event"
-            (blur)="updateFolderName(folder, editedFolderName)"
-          />
-        </mat-panel-title>
-        <mat-panel-description>
-          <div>
-            <button mat-icon-button matTooltip="Clear folder" (click)="clearFolder(folder)">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="Toggle all active" (click)="toggleAllActive(folder, true)">
-              <mat-icon>check</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="Toggle all inactive" (click)="toggleAllActive(folder, false)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <div *ngFor="let prompt of systemPrompts; let i = index">
-        <div *ngIf="prompt.folder === folder" class="p-2 border-b last:border-0">
-          <div class="flex justify-between items-center">
+  @for (folder of folders; track folder) {
+    <div class="mb-4">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <input
+              matInput
+              [ngModel]="folder"
+              (ngModelChange)="editedFolderName = $event"
+              (blur)="updateFolderName(folder, editedFolderName)"
+            />
+          </mat-panel-title>
+          <mat-panel-description>
             <div>
-              <p>{{ prompt.content }}</p>
-              <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
-            </div>
-            <div>
-              <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
-                <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
+              <button mat-icon-button matTooltip="Clear folder" (click)="clearFolder(folder)">
                 <mat-icon>delete</mat-icon>
               </button>
+              <button mat-icon-button matTooltip="Toggle all active" (click)="toggleAllActive(folder, true)">
+                <mat-icon>check</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Toggle all inactive" (click)="toggleAllActive(folder, false)">
+                <mat-icon>close</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Add new message"
+                (click)="addNewMessage(folder)"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
             </div>
-          </div>
-        </div>
-      </div>
-    </mat-expansion-panel>
-  </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        @for (prompt of systemPrompts; track prompt.sys_msg_id; let i = $index) {
+          @if (prompt.folder === folder) {
+            <div class="p-2 border-b last:border-0">
+              <div class="flex justify-between items-center">
+                <div class="flex-1">
+                  @if (prompt.editing) {
+                    <textarea
+                      matInput
+                      [(ngModel)]="prompt.content"
+                      placeholder="Type something..."
+                      class="w-full p-2 border rounded"
+                      (blur)="savePrompt(i)"
+                    ></textarea>
+                  } @else {
+                    <p class="whitespace-pre-wrap">{{ prompt.content }}</p>
+                  }
+                  <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
+                </div>
+                <div>
+                  @if (!prompt.editing) {
+                    <button mat-icon-button matTooltip="Edit" (click)="editPrompt(i)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  }
+                  @if (prompt.editing) {
+                    <button mat-icon-button matTooltip="Save" (click)="savePrompt(i)">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                  }
+                  <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
+                    <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </mat-expansion-panel>
+    </div>
+  }
 </mat-dialog-content>

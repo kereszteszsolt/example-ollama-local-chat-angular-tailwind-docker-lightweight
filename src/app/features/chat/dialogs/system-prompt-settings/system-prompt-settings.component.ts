@@ -1,37 +1,38 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatDialogContent, MatDialogRef} from '@angular/material/dialog';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {SystemMessage} from '../../models/message.model';
 import {OllamaService} from '../../services/ollama.service';
-import {CommonModule} from '@angular/common';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatTooltip} from '@angular/material/tooltip';
+import {MatIcon} from '@angular/material/icon';
 import {FormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatTabsModule} from '@angular/material/tabs';
+import {MatInput} from '@angular/material/input';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 
 @Component({
   selector: 'ollama-chat-system-prompt-settings',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    MatDialogContent,
-    MatIcon,
-    MatButton,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatTooltipModule,
     MatIconButton,
-    MatExpansionModule,
-    MatTabsModule,
+    MatTooltip,
+    MatIcon,
+    FormsModule,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatTab,
+    MatTabGroup,
+    MatButton,
+    MatDialogContent,
+    MatExpansionPanelDescription
   ],
   templateUrl: './system-prompt-settings.component.html',
   styleUrl: './system-prompt-settings.component.scss',
@@ -40,15 +41,10 @@ export class SystemPromptSettingsComponent implements OnInit {
   dialogRef = inject(MatDialogRef<SystemPromptSettingsComponent>);
   ollamaService = inject(OllamaService);
   snackBar = inject(MatSnackBar);
-  systemPrompts: SystemMessage[] = [];
+  systemPrompts: (SystemMessage & { editing?: boolean })[] = [];
   folders: string[] = [];
-  newMessage: Partial<SystemMessage> = {role: 'system', content: '', active: true, folder: ''};
   activeTab = 0;
   editedFolderName: string = '';
-
-  editFolderName(folder: string) {
-    this.editedFolderName = folder;
-  }
 
   ngOnInit() {
     this.loadPrompts();
@@ -56,7 +52,7 @@ export class SystemPromptSettingsComponent implements OnInit {
 
   loadPrompts() {
     this.ollamaService.loadSystemPrompts();
-    this.systemPrompts = [...this.ollamaService.systemPromptsSignal()];
+    this.systemPrompts = [...this.ollamaService.systemPromptsSignal()].map(p => ({ ...p, editing: false }));
     this.updateFolders();
   }
 
@@ -65,19 +61,47 @@ export class SystemPromptSettingsComponent implements OnInit {
     this.folders = uniqueFolders;
   }
 
-  addMessage() {
-    if (!this.newMessage.content || !this.newMessage.folder) return;
-    const message: SystemMessage = {
+  addNewPromptFolder() {
+    const now = new Date();
+    const timestamp = now.toISOString().replace(/[:.-]/g, '');
+    const newFolderName = `New Folder ${timestamp}`;
+    const newPrompt: SystemMessage & { editing?: boolean } = {
       sys_msg_id: crypto.randomUUID(),
       role: 'system',
-      content: this.newMessage.content!,
+      content: '',
       active: true,
-      folder: this.newMessage.folder!,
+      folder: newFolderName,
+      editing: true,
     };
-    this.systemPrompts = [...this.systemPrompts, message];
+    this.systemPrompts = [...this.systemPrompts, newPrompt];
     this.updateFolders();
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
-    this.newMessage = {role: 'system', content: '', active: true, folder: ''};
+  }
+
+  addNewMessage(folder: string) {
+    const newPrompt: SystemMessage & { editing?: boolean } = {
+      sys_msg_id: crypto.randomUUID(),
+      role: 'system',
+      content: '',
+      active: true,
+      folder,
+      editing: true,
+    };
+    this.systemPrompts = [...this.systemPrompts, newPrompt];
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
+  }
+
+  editPrompt(index: number) {
+    this.systemPrompts = this.systemPrompts.map((p, i) =>
+      i === index ? {...p, editing: true} : p
+    );
+  }
+
+  savePrompt(index: number) {
+    this.systemPrompts = this.systemPrompts.map((p, i) =>
+      i === index ? {...p, editing: false} : p
+    );
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
   removeMessage(index: number) {
