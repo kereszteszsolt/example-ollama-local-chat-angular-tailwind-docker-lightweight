@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MatTooltip } from '@angular/material/tooltip';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {FormsModule} from '@angular/forms';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {MatTooltip} from '@angular/material/tooltip';
+import {SystemPromptSettingsComponent} from '../../../dialogs/system-prompt-settings/system-prompt-settings.component';
+import {MatDialog} from '@angular/material/dialog';
+import {SystemMessage} from '../../../models/message.model';
 
 @Component({
   selector: 'ollama-chat-chat-input',
@@ -23,6 +26,7 @@ export class ChatInputComponent {
   @Output() sendMessage: EventEmitter<string> = new EventEmitter<string>();
   @Output() abort: EventEmitter<void> = new EventEmitter<void>();
   @Output() newChat: EventEmitter<void> = new EventEmitter<void>();
+  private dialog = inject(MatDialog);
 
   currentMessage: string = '';
 
@@ -51,5 +55,15 @@ export class ChatInputComponent {
   onNewChat() {
     this.newChat.emit();
     this.onClearInput();
+  }
+
+  openSystemPromptSettings() {
+    const dialogRef = this.dialog.open(SystemPromptSettingsComponent, {
+      width: '700px',
+      disableClose: false,
+      autoFocus: false,
+      restoreFocus: false
+    });
+    dialogRef.afterClosed().subscribe();
   }
 }

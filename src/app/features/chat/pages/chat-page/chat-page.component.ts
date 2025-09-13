@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import { ChatInputComponent } from '../../components/chat-page/chat-input/chat-input.component';
 import { OllamaService } from '../../services/ollama.service';
 import { ChatMessageComponent } from '../../components/chat-page/chat-message/chat-message.component';
@@ -12,7 +12,7 @@ import { ChatMessageComponent } from '../../components/chat-page/chat-message/ch
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.scss'
 })
-export class ChatPageComponent implements AfterViewChecked{
+export class ChatPageComponent implements AfterViewChecked, OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
   ollamaService = inject(OllamaService);
   messages = this.ollamaService.messageHistoryList;
@@ -21,6 +21,10 @@ export class ChatPageComponent implements AfterViewChecked{
 
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+
+  ngOnInit() {
+    this.ollamaService.loadSystemPrompts();
   }
 
   private scrollToBottom() {

@@ -15,7 +15,7 @@
       <button mat-icon-button (click)="onClearInput()" [disabled]="isLoading || !currentMessage.trim()" matTooltip="Clear input">
         <mat-icon class="text-xs">cleaning_services</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="isLoading" matTooltip="Show system prompts">
+      <button mat-icon-button [disabled]="isLoading" (click)="openSystemPromptSettings()" matTooltip="Show system prompts">
         <mat-icon class="text-xs">description</mat-icon>
       </button>
     </div>

@@ -1,0 +1,69 @@
+<mat-dialog-content class="p-4 max-w-3xl">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">System Prompts</h2>
+    <button
+      mat-icon-button
+      matTooltip="Close"
+      [class.text-red-500]="unsavedChanges"
+      (click)="closeDialog()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="mb-4 p-3 border rounded-lg">
+    <h3 class="font-semibold mb-2">Add New Message</h3>
+    <div class="flex flex-col gap-2">
+      <mat-form-field>
+        <mat-label>Folder</mat-label>
+        <input matInput [(ngModel)]="newMessage.folder" placeholder="Folder name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Content</mat-label>
+        <textarea matInput [(ngModel)]="newMessage.content" placeholder="Message content"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addMessage()">Add</button>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <button mat-raised-button color="accent" (click)="save()">Save All</button>
+  </div>
+
+  <div *ngFor="let folder of folders" class="mb-4 border rounded-lg p-3">
+    <div class="flex justify-between items-center mb-2">
+      <h3 class="font-semibold">{{ folder }}</h3>
+      <div>
+        <button mat-icon-button matTooltip="Clear folder" (click)="clearFolder(folder)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Toggle all active" (click)="toggleAllActive(folder, true)">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Toggle all inactive" (click)="toggleAllActive(folder, false)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngFor="let prompt of systemPrompts; let i = index" class="p-2 border-b last:border-0">
+      <div *ngIf="prompt.folder === folder" class="flex justify-between items-center">
+        <div>
+          <p>{{ prompt.content }}</p>
+          <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <div>
+          <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
+            <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <input type="file" (change)="importFromCSV($event)" accept=".csv,.xlsx" />
+  </div>
+</mat-dialog-content>

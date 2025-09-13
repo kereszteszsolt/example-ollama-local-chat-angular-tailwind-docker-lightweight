@@ -8,3 +8,10 @@ export interface Message extends ReqMessage {
   ref_id?: string;
   total_duration?: number;
 }
+
+export interface SystemMessage extends ReqMessage {
+  role: 'system';
+  content: string;
+  active: boolean;
+  folder: string;
+}
