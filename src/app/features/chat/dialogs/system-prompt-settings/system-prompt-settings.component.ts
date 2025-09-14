@@ -9,6 +9,7 @@ import {MatIcon} from '@angular/material/icon';
 import {FormsModule} from '@angular/forms';
 import {MatInput} from '@angular/material/input';
 import {
+  MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelDescription,
   MatExpansionPanelHeader,
@@ -30,10 +31,9 @@ import {MatDivider} from '@angular/material/divider';
     MatExpansionPanelTitle,
     MatButton,
     MatDialogContent,
-    MatExpansionPanelDescription,
     MatDialogTitle,
     MatDialogActions,
-    MatDivider
+    MatAccordion,
   ],
   templateUrl: './system-prompt-settings.component.html',
   styleUrl: './system-prompt-settings.component.scss',

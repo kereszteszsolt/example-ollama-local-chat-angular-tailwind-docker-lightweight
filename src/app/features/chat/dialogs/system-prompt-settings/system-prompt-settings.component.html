@@ -1,82 +1,79 @@
 <h2 mat-dialog-title>System Prompts</h2>
-<mat-dialog-content class="p-4 max-w-[786px]">
-  <!-- Button Row -->
-  <div class="mb-4 flex justify-end gap-2">
-
-  </div>
-
+<mat-dialog-content class="max-w-[786px]">
   <!-- Folders and Prompts -->
-  @for (folder of folders; track folder) {
-    <mat-expansion-panel class="mb-2">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <input
-            matInput
-            [ngModel]="folder"
-            (ngModelChange)="editedFolderName = $event"
-            (blur)="updateFolderName(folder, editedFolderName)"
-            class="w-full"
-          />
-        </mat-panel-title>
-        <button mat-icon-button (click)="$event.stopPropagation(); clearFolder(folder)" matTooltip="Delete folder">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-expansion-panel-header>
+  <mat-accordion>
+    @for (folder of folders; track folder) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <input
+              matInput
+              [ngModel]="folder"
+              (ngModelChange)="editedFolderName = $event"
+              (blur)="updateFolderName(folder, editedFolderName)"
+              class="w-full"
+            />
+          </mat-panel-title>
+          <button mat-icon-button (click)="$event.stopPropagation(); clearFolder(folder)" matTooltip="Delete folder">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-expansion-panel-header>
 
-      <!-- Button Row for Folder Actions -->
-      <div class="flex justify-end gap-2 p-2 border-t">
-        <button mat-button (click)="toggleAllActive(folder, true)">Activate All</button>
-        <button mat-button (click)="toggleAllActive(folder, false)">Inactivate All</button>
-        <button mat-button (click)="addNewMessage(folder)">
-          <mat-icon>add</mat-icon>
-          Add Prompt
-        </button>
-      </div>
+        <!-- Button Row for Folder Actions -->
+        <div class="flex justify-end gap-2 p-2 border-t">
+          <button mat-button (click)="toggleAllActive(folder, true)">Activate All</button>
+          <button mat-button (click)="toggleAllActive(folder, false)">Inactivate All</button>
+          <button mat-button (click)="addNewMessage(folder)">
+            <mat-icon>add</mat-icon>
+            Add Prompt
+          </button>
+        </div>
 
-      <!-- Prompts -->
-      @for (prompt of systemPrompts; track prompt.sys_msg_id; let i = $index) {
-        @if (prompt.folder === folder) {
-          <div class="p-2 border-b last:border-0">
-            <div class="flex justify-between items-center">
-              <div class="flex-1">
-                @if (prompt.editing) {
-                  <textarea
-                    matInput
-                    [(ngModel)]="prompt.content"
-                    placeholder="Type something..."
-                    class="w-full p-2 border rounded"
-                    (blur)="savePrompt(i)"
-                    autofocus
-                  ></textarea>
-                } @else {
-                  <p class="whitespace-pre-wrap">{{ prompt.content }}</p>
-                }
-                <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
-              </div>
-              <div>
-                @if (!prompt.editing) {
-                  <button mat-icon-button matTooltip="Edit" (click)="editPrompt(i)">
-                    <mat-icon>edit</mat-icon>
+        <!-- Prompts -->
+        @for (prompt of systemPrompts; track prompt.sys_msg_id; let i = $index) {
+          @if (prompt.folder === folder) {
+            <div class="p-2 border-b last:border-0">
+              <div class="flex justify-between items-center">
+                <div class="flex-1">
+                  @if (prompt.editing) {
+                    <textarea
+                      matInput
+                      [(ngModel)]="prompt.content"
+                      placeholder="Type something..."
+                      class="w-full p-2 border rounded"
+                      (blur)="savePrompt(i)"
+                      autofocus
+                    ></textarea>
+                  } @else {
+                    <p class="whitespace-pre-wrap">{{ prompt.content }}</p>
+                  }
+                  <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
+                </div>
+                <div>
+                  @if (!prompt.editing) {
+                    <button mat-icon-button matTooltip="Edit" (click)="editPrompt(i)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  }
+                  @if (prompt.editing) {
+                    <button mat-icon-button matTooltip="Save" (click)="savePrompt(i)">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                  }
+                  <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
+                    <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
                   </button>
-                }
-                @if (prompt.editing) {
-                  <button mat-icon-button matTooltip="Save" (click)="savePrompt(i)">
-                    <mat-icon>save</mat-icon>
+                  <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
+                    <mat-icon>delete</mat-icon>
                   </button>
-                }
-                <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
-                  <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
-                </button>
-                <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                </div>
               </div>
             </div>
-          </div>
+          }
         }
-      }
-    </mat-expansion-panel>
-  }
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="p-4">
   <button mat-button color="primary" (click)="addNewPromptFolder()">
