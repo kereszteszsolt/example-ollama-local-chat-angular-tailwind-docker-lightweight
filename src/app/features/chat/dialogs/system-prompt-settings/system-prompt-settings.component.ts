@@ -11,11 +11,9 @@ import {MatInput} from '@angular/material/input';
 import {
   MatAccordion,
   MatExpansionPanel,
-  MatExpansionPanelDescription,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
-import {MatDivider} from '@angular/material/divider';
 
 @Component({
   selector: 'ollama-chat-system-prompt-settings',
@@ -45,6 +43,7 @@ export class SystemPromptSettingsComponent implements OnInit {
   systemPrompts: (SystemMessage & { editing?: boolean })[] = [];
   folders: string[] = [];
   editedFolderName: string = '';
+  folderEditing: Record<string, boolean> = {};
 
   ngOnInit() {
     this.loadPrompts();
@@ -59,6 +58,25 @@ export class SystemPromptSettingsComponent implements OnInit {
   updateFolders() {
     const uniqueFolders = [...new Set(this.systemPrompts.map(p => p.folder))];
     this.folders = uniqueFolders;
+  }
+
+  startEditFolderName(folder: string) {
+    this.editedFolderName = folder;
+    this.folderEditing = {...this.folderEditing, [folder]: true};
+  }
+
+  saveFolderName(oldFolder: string) {
+    const newName = this.editedFolderName.trim();
+    if (!newName || newName === oldFolder) {
+      this.folderEditing = {...this.folderEditing, [oldFolder]: false};
+      return;
+    }
+    this.systemPrompts = this.systemPrompts.map(p =>
+      p.folder === oldFolder ? {...p, folder: newName} : p
+    );
+    this.updateFolders();
+    this.ollamaService.saveSystemPrompts(this.systemPrompts);
+    this.folderEditing = {...this.folderEditing, [oldFolder]: false};
   }
 
   addNewPromptFolder() {
@@ -78,7 +96,7 @@ export class SystemPromptSettingsComponent implements OnInit {
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
-  addNewMessage(folder: string) {
+  addNewPrompt(folder: string) {
     const newPrompt: SystemMessage & { editing?: boolean } = {
       sys_msg_id: crypto.randomUUID(),
       role: 'system',
@@ -104,7 +122,7 @@ export class SystemPromptSettingsComponent implements OnInit {
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
-  removeMessage(index: number) {
+  removePrompt(index: number) {
     this.systemPrompts = this.systemPrompts.filter((_, i) => i !== index);
     this.updateFolders();
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
@@ -130,15 +148,6 @@ export class SystemPromptSettingsComponent implements OnInit {
     this.ollamaService.saveSystemPrompts(this.systemPrompts);
   }
 
-  updateFolderName(folder: string, newName: string) {
-    if (!newName.trim()) return;
-    this.systemPrompts = this.systemPrompts.map(p =>
-      p.folder === folder ? {...p, folder: newName} : p
-    );
-    this.updateFolders();
-    this.ollamaService.saveSystemPrompts(this.systemPrompts);
-  }
-
   closeDialog() {
     this.dialogRef.close();
   }
@@ -146,15 +155,12 @@ export class SystemPromptSettingsComponent implements OnInit {
   importFromCSV(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (!fileInput.files?.length) return;
-
     const file = fileInput.files[0];
     const reader = new FileReader();
-
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const content = e.target?.result as string;
       this.parseCSV(content);
     };
-
     reader.readAsText(file);
   }
 
@@ -163,24 +169,18 @@ export class SystemPromptSettingsComponent implements OnInit {
     const headers = lines[0].split(',').map(h => h.trim());
     const folderIndex = headers.indexOf('foldername');
     const promptIndex = headers.indexOf('prompt');
-
     if (folderIndex === -1 || promptIndex === -1) {
       this.snackBar.open('CSV must contain "foldername" and "prompt" columns.', 'Close', {duration: 3000});
       return;
     }
-
     const newPrompts: (SystemMessage & { editing?: boolean })[] = [];
-
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
-
       const values = line.split(',');
       const folder = values[folderIndex]?.trim();
       const content = values[promptIndex]?.trim();
-
       if (!folder || !content) continue;
-
       newPrompts.push({
         sys_msg_id: crypto.randomUUID(),
         role: 'system',
@@ -190,7 +190,6 @@ export class SystemPromptSettingsComponent implements OnInit {
         editing: false,
       });
     }
-
     if (newPrompts.length) {
       this.systemPrompts = [...this.systemPrompts, ...newPrompts];
       this.updateFolders();
@@ -259,5 +258,4 @@ export class SystemPromptSettingsComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
   }
-
 }

@@ -6,29 +6,44 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <input
-              matInput
-              [ngModel]="folder"
-              (ngModelChange)="editedFolderName = $event"
-              (blur)="updateFolderName(folder, editedFolderName)"
-              class="w-full"
-            />
+            @if (!folderEditing[folder]) {
+              <span>{{ folder }}</span>
+              <button mat-icon-button (click)="$event.stopPropagation(); startEditFolderName(folder)" matTooltip="Edit folder name">
+                <mat-icon>edit</mat-icon>
+              </button>
+            } @else {
+              <input
+                #folderNameInput
+                matInput
+                [(ngModel)]="editedFolderName"
+                (blur)="saveFolderName(folder)"
+                (click)="$event.stopPropagation()"
+                class="w-full"
+              />
+              <button mat-icon-button (click)="$event.stopPropagation(); saveFolderName(folder)" matTooltip="Save folder name">
+                <mat-icon>save</mat-icon>
+              </button>
+            }
           </mat-panel-title>
           <button mat-icon-button (click)="$event.stopPropagation(); clearFolder(folder)" matTooltip="Delete folder">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-expansion-panel-header>
-
         <!-- Button Row for Folder Actions -->
         <div class="flex justify-end gap-2 p-2 border-t">
-          <button mat-button (click)="toggleAllActive(folder, true)">Activate All</button>
-          <button mat-button (click)="toggleAllActive(folder, false)">Inactivate All</button>
-          <button mat-button (click)="addNewMessage(folder)">
+          <button mat-button (click)="toggleAllActive(folder, true)">
+            <mat-icon>check_circle</mat-icon>
+            Activate All
+          </button>
+          <button mat-button (click)="toggleAllActive(folder, false)">
+            <mat-icon>cancel</mat-icon>
+            Inactivate All
+          </button>
+          <button mat-button (click)="addNewPrompt(folder)">
             <mat-icon>add</mat-icon>
             Add Prompt
           </button>
         </div>
-
         <!-- Prompts -->
         @for (prompt of systemPrompts; track prompt.sys_msg_id; let i = $index) {
           @if (prompt.folder === folder) {
@@ -51,19 +66,22 @@
                 </div>
                 <div>
                   @if (!prompt.editing) {
-                    <button mat-icon-button matTooltip="Edit" (click)="editPrompt(i)">
+                    <button mat-icon-button matTooltip="Edit" (click)="$event.stopPropagation(); editPrompt(i)">
                       <mat-icon>edit</mat-icon>
                     </button>
                   }
                   @if (prompt.editing) {
-                    <button mat-icon-button matTooltip="Save" (click)="savePrompt(i)">
+                    <button mat-icon-button matTooltip="Save" (click)="$event.stopPropagation(); savePrompt(i)">
                       <mat-icon>save</mat-icon>
                     </button>
                   }
-                  <button mat-icon-button matTooltip="Toggle active" (click)="toggleActive(i)">
-                    <mat-icon>{{ prompt.active ? 'check' : 'close' }}</mat-icon>
+                  <button
+                    mat-icon-button
+                    [matTooltip]="prompt.active ? 'Deactivate' : 'Activate'"
+                    (click)="$event.stopPropagation(); toggleActive(i)">
+                    <mat-icon>{{ prompt.active ? 'cancel' : 'check_circle' }}</mat-icon>
                   </button>
-                  <button mat-icon-button matTooltip="Remove" (click)="removeMessage(i)">
+                  <button mat-icon-button matTooltip="Remove" (click)="$event.stopPropagation(); removePrompt(i)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>
@@ -115,4 +133,3 @@
     </button>
   </label>
 </mat-dialog-actions>
-
