@@ -144,10 +144,60 @@ export class SystemPromptSettingsComponent implements OnInit {
   }
 
   importFromCSV(event: Event) {
-    // TODO: Implement import from CSV/Excel
+    const fileInput = event.target as HTMLInputElement;
+    if (!fileInput.files?.length) return;
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const content = e.target?.result as string;
+      this.parseCSV(content);
+    };
+
+    reader.readAsText(file);
   }
 
-  importFromJSON(event: Event) {
-    // TODO: Implement import from JSON
+  parseCSV(csvContent: string) {
+    const lines = csvContent.split('\n');
+    const headers = lines[0].split(',').map(h => h.trim());
+    const folderIndex = headers.indexOf('foldername');
+    const promptIndex = headers.indexOf('prompt');
+
+    if (folderIndex === -1 || promptIndex === -1) {
+      this.snackBar.open('CSV must contain "foldername" and "prompt" columns.', 'Close', { duration: 3000 });
+      return;
+    }
+
+    const newPrompts: (SystemMessage & { editing?: boolean })[] = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      const values = line.split(',');
+      const folder = values[folderIndex]?.trim();
+      const content = values[promptIndex]?.trim();
+
+      if (!folder || !content) continue;
+
+      newPrompts.push({
+        sys_msg_id: crypto.randomUUID(),
+        role: 'system',
+        content,
+        active: true,
+        folder,
+        editing: false,
+      });
+    }
+
+    if (newPrompts.length) {
+      this.systemPrompts = [...this.systemPrompts, ...newPrompts];
+      this.updateFolders();
+      this.ollamaService.saveSystemPrompts(this.systemPrompts);
+      this.snackBar.open(`Imported ${newPrompts.length} prompts.`, 'Close', { duration: 3000 });
+    } else {
+      this.snackBar.open('No valid prompts found in CSV.', 'Close', { duration: 3000 });
+    }
   }
 }

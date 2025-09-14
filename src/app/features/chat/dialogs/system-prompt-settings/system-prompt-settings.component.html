@@ -75,25 +75,25 @@
     }
   </mat-accordion>
 </mat-dialog-content>
-<mat-dialog-actions align="end" class="p-4">
+<mat-dialog-actions align="end">
   <button mat-button color="primary" (click)="addNewPromptFolder()">
     <mat-icon>add</mat-icon>
     New Folder
   </button>
-  <input type="file" id="importJSON" (change)="importFromJSON($event)" accept=".json" style="display: none;"/>
-  <label for="importJSON">
-    <button mat-button>
-      <mat-icon>upload</mat-icon>
-      Import JSON
-    </button>
-  </label>
-  <input type="file" id="importCSV" (change)="importFromCSV($event)" accept=".csv,.xlsx" style="display: none;"/>
-  <label for="importCSV">
-    <button mat-button>
-      <mat-icon>upload</mat-icon>
-      Import CSV
-    </button>
-  </label>
+
+  <button mat-button (click)="fileInput.click()">
+    <mat-icon>upload</mat-icon>
+    Import CSV
+  </button>
+  <input
+    type="file"
+    #fileInput
+    id="importCSV"
+    (change)="importFromCSV($event)"
+    accept=".csv,.xlsx"
+    style="display: none;"
+  />
+
   <label for="closeDialog">
     <button mat-button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
