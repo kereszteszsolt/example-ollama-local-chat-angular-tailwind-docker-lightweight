@@ -1,0 +1,22 @@
+[
+  {
+    "folder": "mermaidx",
+    "prompt": "mermaid Pie Char example:\n```mermaid\npie title Pets adopted by volunteers\n    \"Dogs\" : 386\n    \"Cats\" : 85\n    \"Rats\" : 15\n```"
+  },
+  {
+    "folder": "mermaidx",
+    "prompt": "Pie chart accepts only numerical values, do not use % or any other kind of sign or simbol"
+  },
+  {
+    "folder": "General",
+    "prompt": "General prompt kapa b�la"
+  },
+  {
+    "folder": "Diagrams",
+    "prompt": "Diagram prompt"
+  },
+  {
+    "folder": "General",
+    "prompt": "Kulimpa"
+  }
+]

@@ -52,7 +52,7 @@ export class SystemPromptSettingsComponent implements OnInit {
 
   loadPrompts() {
     this.ollamaService.loadSystemPrompts();
-    this.systemPrompts = [...this.ollamaService.systemPromptsSignal()].map(p => ({ ...p, editing: false }));
+    this.systemPrompts = [...this.ollamaService.systemPromptsSignal()].map(p => ({...p, editing: false}));
     this.updateFolders();
   }
 
@@ -165,7 +165,7 @@ export class SystemPromptSettingsComponent implements OnInit {
     const promptIndex = headers.indexOf('prompt');
 
     if (folderIndex === -1 || promptIndex === -1) {
-      this.snackBar.open('CSV must contain "foldername" and "prompt" columns.', 'Close', { duration: 3000 });
+      this.snackBar.open('CSV must contain "foldername" and "prompt" columns.', 'Close', {duration: 3000});
       return;
     }
 
@@ -195,9 +195,69 @@ export class SystemPromptSettingsComponent implements OnInit {
       this.systemPrompts = [...this.systemPrompts, ...newPrompts];
       this.updateFolders();
       this.ollamaService.saveSystemPrompts(this.systemPrompts);
-      this.snackBar.open(`Imported ${newPrompts.length} prompts.`, 'Close', { duration: 3000 });
+      this.snackBar.open(`Imported ${newPrompts.length} prompts.`, 'Close', {duration: 3000});
     } else {
-      this.snackBar.open('No valid prompts found in CSV.', 'Close', { duration: 3000 });
+      this.snackBar.open('No valid prompts found in CSV.', 'Close', {duration: 3000});
     }
   }
+
+  importFromJSON(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (!fileInput.files?.length) return;
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const content = e.target?.result as string;
+      this.parseJSON(content);
+    };
+    reader.readAsText(file);
+  }
+
+  parseJSON(jsonContent: string) {
+    try {
+      const parsedData = JSON.parse(jsonContent);
+      if (!Array.isArray(parsedData)) {
+        this.snackBar.open('JSON must be an array of objects with "folder" and "prompt" properties.', 'Close', {duration: 3000});
+        return;
+      }
+      const newPrompts: (SystemMessage & { editing?: boolean })[] = [];
+      for (const item of parsedData) {
+        if (!item.folder || !item.prompt) continue;
+        newPrompts.push({
+          sys_msg_id: crypto.randomUUID(),
+          role: 'system',
+          content: item.prompt,
+          active: true,
+          folder: item.folder,
+          editing: false,
+        });
+      }
+      if (newPrompts.length) {
+        this.systemPrompts = [...this.systemPrompts, ...newPrompts];
+        this.updateFolders();
+        this.ollamaService.saveSystemPrompts(this.systemPrompts);
+        this.snackBar.open(`Imported ${newPrompts.length} prompts.`, 'Close', {duration: 3000});
+      } else {
+        this.snackBar.open('No valid prompts found in JSON.', 'Close', {duration: 3000});
+      }
+    } catch (e) {
+      this.snackBar.open('Invalid JSON format.', 'Close', {duration: 3000});
+    }
+  }
+
+  exportToJSON() {
+    const data = this.systemPrompts.map(p => ({
+      folder: p.folder,
+      prompt: p.content,
+    }));
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], {type: 'application/json'});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'system-prompts.json';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
 }

@@ -80,20 +80,34 @@
     <mat-icon>add</mat-icon>
     New Folder
   </button>
-
-  <button mat-button (click)="fileInput.click()">
+  <button mat-button (click)="fileInputCSV.click()">
     <mat-icon>upload</mat-icon>
     Import CSV
   </button>
   <input
     type="file"
-    #fileInput
+    #fileInputCSV
     id="importCSV"
     (change)="importFromCSV($event)"
     accept=".csv,.xlsx"
     style="display: none;"
   />
-
+  <button mat-button (click)="fileInputJSON.click()">
+    <mat-icon>upload</mat-icon>
+    Import JSON
+  </button>
+  <input
+    type="file"
+    #fileInputJSON
+    id="importJSON"
+    (change)="importFromJSON($event)"
+    accept=".json"
+    style="display: none;"
+  />
+  <button mat-button (click)="exportToJSON()">
+    <mat-icon>download</mat-icon>
+    Export JSON
+  </button>
   <label for="closeDialog">
     <button mat-button (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -101,3 +115,4 @@
     </button>
   </label>
 </mat-dialog-actions>
+
