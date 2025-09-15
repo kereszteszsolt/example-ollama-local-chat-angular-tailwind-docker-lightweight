@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SystemMessage} from '../../models/message.model';
@@ -45,6 +45,8 @@ export class SystemPromptSettingsComponent implements OnInit {
   editedFolderName: string = '';
   folderEditing: Record<string, boolean> = {};
 
+  @ViewChild('folderNameInput') folderNameInput?: ElementRef<HTMLInputElement>;
+
   ngOnInit() {
     this.loadPrompts();
   }
@@ -63,6 +65,9 @@ export class SystemPromptSettingsComponent implements OnInit {
   startEditFolderName(folder: string) {
     this.editedFolderName = folder;
     this.folderEditing = {...this.folderEditing, [folder]: true};
+    setTimeout(() => {
+      this.folderNameInput?.nativeElement?.focus();
+    });
   }
 
   saveFolderName(oldFolder: string) {

@@ -8,7 +8,8 @@
           <mat-panel-title>
             @if (!folderEditing[folder]) {
               <span>{{ folder }}</span>
-              <button mat-icon-button (click)="$event.stopPropagation(); startEditFolderName(folder)" matTooltip="Edit folder name">
+              <button mat-icon-button (click)="$event.stopPropagation(); startEditFolderName(folder)"
+                      matTooltip="Edit folder name">
                 <mat-icon>edit</mat-icon>
               </button>
             } @else {
@@ -20,7 +21,8 @@
                 (click)="$event.stopPropagation()"
                 class="w-full"
               />
-              <button mat-icon-button (click)="$event.stopPropagation(); saveFolderName(folder)" matTooltip="Save folder name">
+              <button mat-icon-button (click)="$event.stopPropagation(); saveFolderName(folder)"
+                      matTooltip="Save folder name">
                 <mat-icon>save</mat-icon>
               </button>
             }
