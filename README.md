@@ -3,14 +3,17 @@
 Ollama local chat built with Angular, Angular Material, Tailwind, and Docker. A lightweight version.
 
 # Run locally
-
+```
 npm run dev
+```
 
 # Open in your browser: http://localhost:4200
 
 # Run with Docker
 
+```
 dockercompose up --build
+```
 
 # Open in your browser: http://localhost:4201
 
