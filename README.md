@@ -9,6 +9,7 @@ It allows you to chat with locally installed Ollama models, keeping context duri
 
 <img src="readme-assets/Capture1.png" alt="Screenshot 1" width="800"/>  
 <img src="readme-assets/Capture2.png" alt="Screenshot 1" width="800"/>  
+<img src="readme-assets/Capture3.png" alt="Screenshot 1" width="800"/>  
 
 ---
 
