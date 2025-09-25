@@ -93,3 +93,16 @@ markdown chat app, how to render markdown in chat, display math formulas in ai c
 ollama chat example, how to use ollama with angular, ollama system prompts, ollama docker tutorial, ollama frontend ui, ollama chat vs generate mode, ollama local llm chat, switch between ollama models, run ollama in docker-compose, ollama nodejs integration, ollama with angular material and tailwind,
 docker angular tailwind starter, run angular app in docker, frontend docker example, tailwind angular ui demo, angular material chatbot, build chat ui with tailwind, nodejs angular docker setup, lightweight frontend for llm,
 ai chat features, start new chat ui, regenerate ai responses, stop ai response, copy answers in chat, code highlighting ai app, save and delete system prompts, localstorage chat app, interactive ai conversation demo
+
+## 🛠️ Tools & Documentation
+
+Here are the main tools and frameworks used in this project, along with their official documentation links:
+
+- [Angular](https://angular.io/docs) – Frontend framework
+- [Angular Material](https://material.angular.io/components/categories) – UI components for Angular
+- [Tailwind CSS](https://tailwindcss.com/docs) – Utility-first CSS framework
+- [Node.js](https://nodejs.org/en/docs/) – JavaScript runtime environment
+- [Docker Desktop](https://docs.docker.com/desktop/) – Containerization platform
+- [Ollama](https://ollama.com/) – Local AI model runner
+- [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) – API reference for Ollama  
+
