@@ -5,6 +5,14 @@ It allows you to chat with locally installed Ollama models, keeping context duri
 
 ---
 
+## 📸 Screenshots
+
+<img src="readme-assets/Capture1.png" alt="Screenshot 1" width="800"/>  
+<img src="readme-assets/Capture2.png" alt="Screenshot 1" width="800"/>  
+
+---
+
+
 ## ✨ Features
 
 - Local chat with Ollama-installed models  
@@ -62,12 +70,6 @@ Then open in your browser:
 
 Make sure you have the **Ollama server** running locally at:  
 👉 [http://localhost:11434](http://localhost:11434) (default port)
-
----
-
-## 📸 Screenshots
-
-<img src="readme-assets/Capture1.png" alt="Screenshot 1" width="800"/>  
 
 ---
 
