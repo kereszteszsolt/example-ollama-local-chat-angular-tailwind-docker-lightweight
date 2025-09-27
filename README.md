@@ -101,11 +101,15 @@ ai chat features, start new chat ui, regenerate ai responses, stop ai response, 
 
 Here are the main tools and frameworks used in this project, along with their official documentation links:
 
-- [Angular](https://angular.io/docs) – Frontend framework
-- [Angular Material](https://material.angular.io/components/categories) – UI components for Angular
-- [Tailwind CSS](https://tailwindcss.com/docs) – Utility-first CSS framework
-- [Node.js](https://nodejs.org/en/docs/) – JavaScript runtime environment
-- [Docker Desktop](https://docs.docker.com/desktop/) – Containerization platform
+- [Angular](https://angular.dev) – Frontend framework
+- [Angular Material](https://material.angular.dev) – UI components for Angular
+- [Tailwind CSS](https://tailwindcss.com) – Utility-first CSS framework
+- [Node.js](https://nodejs.org) – JavaScript runtime environment
+- [Docker](https://www.docker.com/) – Containerization platform
 - [Ollama](https://ollama.com/) – Local AI model runner
-- [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) – API reference for Ollama  
+- [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) – API reference for Ollama
+
+##  ❓ Mermaid & KaTeX syntax support
+- [Mermaid docs](https://mermaid.js.org/intro) – Diagramming and visualization tool
+- [KaTeX docs](https://katex.org/docs/supported.html) – High‑performance math typesetting library
 
