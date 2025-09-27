@@ -1,0 +1,137 @@
+<h2 mat-dialog-title>System Prompts</h2>
+<mat-dialog-content class="max-w-[786px]">
+  <!-- Folders and Prompts -->
+  <mat-accordion>
+    @for (folder of folders; track folder) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            @if (!folderEditing[folder]) {
+              <span>{{ folder }}</span>
+              <button mat-icon-button (click)="$event.stopPropagation(); startEditFolderName(folder)"
+                      matTooltip="Edit folder name">
+                <mat-icon>edit</mat-icon>
+              </button>
+            } @else {
+              <input
+                #folderNameInput
+                matInput
+                [(ngModel)]="editedFolderName"
+                (blur)="saveFolderName(folder)"
+                (click)="$event.stopPropagation()"
+                class="w-full"
+              />
+              <button mat-icon-button (click)="$event.stopPropagation(); saveFolderName(folder)"
+                      matTooltip="Save folder name">
+                <mat-icon>save</mat-icon>
+              </button>
+            }
+          </mat-panel-title>
+          <button mat-icon-button (click)="$event.stopPropagation(); clearFolder(folder)" matTooltip="Delete folder">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-expansion-panel-header>
+        <!-- Button Row for Folder Actions -->
+        <div class="flex justify-end gap-2 p-2 border-t">
+          <button mat-button (click)="toggleAllActive(folder, true)">
+            <mat-icon>check_circle</mat-icon>
+            Activate All
+          </button>
+          <button mat-button (click)="toggleAllActive(folder, false)">
+            <mat-icon>cancel</mat-icon>
+            Inactivate All
+          </button>
+          <button mat-button (click)="addNewPrompt(folder)">
+            <mat-icon>add</mat-icon>
+            Add Prompt
+          </button>
+        </div>
+        <!-- Prompts -->
+        @for (prompt of systemPrompts; track prompt.sys_msg_id; let i = $index) {
+          @if (prompt.folder === folder) {
+            <div class="p-2 border-b last:border-0">
+              <div class="flex justify-between items-center">
+                <div class="flex-1">
+                  @if (prompt.editing) {
+                    <textarea
+                      matInput
+                      [(ngModel)]="prompt.content"
+                      placeholder="Type something..."
+                      class="w-full p-2 border rounded"
+                      (blur)="savePrompt(i)"
+                      autofocus
+                    ></textarea>
+                  } @else {
+                    <p class="whitespace-pre-wrap">{{ prompt.content }}</p>
+                  }
+                  <span class="text-sm text-gray-500">{{ prompt.active ? 'Active' : 'Inactive' }}</span>
+                </div>
+                <div>
+                  @if (!prompt.editing) {
+                    <button mat-icon-button matTooltip="Edit" (click)="$event.stopPropagation(); editPrompt(i)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  }
+                  @if (prompt.editing) {
+                    <button mat-icon-button matTooltip="Save" (click)="$event.stopPropagation(); savePrompt(i)">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                  }
+                  <button
+                    mat-icon-button
+                    [matTooltip]="prompt.active ? 'Deactivate' : 'Activate'"
+                    (click)="$event.stopPropagation(); toggleActive(i)">
+                    <mat-icon>{{ prompt.active ? 'cancel' : 'check_circle' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Remove" (click)="$event.stopPropagation(); removePrompt(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button color="primary" (click)="addNewPromptFolder()">
+    <mat-icon>add</mat-icon>
+    New Folder
+  </button>
+  <button mat-button (click)="fileInputCSV.click()">
+    <mat-icon>upload</mat-icon>
+    Import CSV
+  </button>
+  <input
+    type="file"
+    #fileInputCSV
+    id="importCSV"
+    (change)="importFromCSV($event)"
+    accept=".csv,.xlsx"
+    style="display: none;"
+  />
+  <button mat-button (click)="fileInputJSON.click()">
+    <mat-icon>upload</mat-icon>
+    Import JSON
+  </button>
+  <input
+    type="file"
+    #fileInputJSON
+    id="importJSON"
+    (change)="importFromJSON($event)"
+    accept=".json"
+    style="display: none;"
+  />
+  <button mat-button (click)="exportToJSON()">
+    <mat-icon>download</mat-icon>
+    Export JSON
+  </button>
+  <label for="closeDialog">
+    <button mat-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+      Close
+    </button>
+  </label>
+</mat-dialog-actions>

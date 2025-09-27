@@ -1,0 +1,26 @@
+<div [ngClass]="message.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
+  <div
+    class="text-[16px]"
+    [ngClass]="message.role === 'user'
+      ? 'ml-10 border-1 rounded-tl-lg rounded-tr-lg rounded-bl-lg bg-[var(--neutral-color)] w-auto p-2'
+      : 'mr-10 w-full'"
+  >
+    <markdown
+      [data]="message.content"
+      katex
+      mermaid
+      [mermaidOptions] ="{ theme: 'forest' }"
+    ></markdown>
+    @if (message.role === 'assistant' && !hideToolbar) {
+      <div class="flex flex-row flex-start gap-2 items-center text-xs">
+        <button mat-icon-button class="p-1" (click)="copyContentToClipboard(message.content)" matTooltip="Copy to clipboard">
+          <mat-icon class="text-xs">content_copy</mat-icon>
+        </button>
+        <button mat-icon-button class="p-1" (click)="onRegenerate()" matTooltip="Regenerate">
+          <mat-icon class="text-xs">refresh</mat-icon>
+        </button>
+        <span>Time spent: {{message.total_duration ?? 0  | timeSpent}}</span>
+      </div>
+    }
+  </div>
+</div>

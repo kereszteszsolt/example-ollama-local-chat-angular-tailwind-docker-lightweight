@@ -1,0 +1,74 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use "tailwindcss" as *;
+@use 'app/styles/ollama-chat-theme-colors' as ollamaChatTheme;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: ollamaChatTheme.$primary-palette,
+      secondary: ollamaChatTheme.$secondary-palette,
+      tertiary: ollamaChatTheme.$tertiary-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+}
+
+:root {
+  --primray-color: coral;
+  --primary-caption-color: antiquewhite;
+  --neutral-color: whitesmoke;
+  --neutral-color-variant: floralwhite;
+
+  @include mat.toolbar-overrides((
+    container-background-color: coral,
+    container-text-color: antiquewhite,
+  ));
+
+  @include mat.dialog-overrides((
+    container-min-width: 786px,
+  ));
+}
+
+/**
+✔ What HEX color should be used to generate the M3 theme? It will represent your primary color palette. (ex. #ffffff) #ff7f50  /coral
+✔ What HEX color should be used represent the secondary color palette? (Leave blank to use generated colors from Material) #228b22 /forrestgreen
+✔ What HEX color should be used represent the tertiary color palette? (Leave blank to use generated colors from Material) #00bfff /deepskyblue
+✔ What HEX color should be used represent the neutral color palette? (Leave blank to use generated colors from Material) #fffaf0 /floralwhite
+✔ What HEX color should be used represent the neutral variant palette? (Leave blank to use generated colors from Material) #f5f5f5 /whitesmoke
+✔ What HEX color should be used represent the error palette? (Leave blank to use generated colors from Material) #ac1010 /darkred
+ */
