@@ -8,8 +8,8 @@ It allows you to chat with locally installed Ollama models, keeping context duri
 ## 📸 Screenshots
 
 <img src="readme-assets/Capture1.png" alt="Screenshot 1" width="800"/>  
-<img src="readme-assets/Capture2.png" alt="Screenshot 1" width="800"/>  
-<img src="readme-assets/Capture3.png" alt="Screenshot 1" width="800"/>  
+<img src="readme-assets/Capture2.png" alt="Screenshot 2" width="800"/>  
+<img src="readme-assets/Capture3.png" alt="Screenshot 3" width="800"/>  
 
 ---
 
@@ -32,6 +32,45 @@ It allows you to chat with locally installed Ollama models, keeping context duri
 - Detects installed Ollama models and lets you switch between them  
 
 ---
+## 🎥 YouTube Demos
+
+<div align="center">
+<table>
+  <tr></tr>
+    <td>
+      <a href="https://www.youtube.com/watch?v=r2X0joUIEbE" target="_blank">
+        <img src="https://img.youtube.com/vi/r2X0joUIEbE/0.jpg" width="300" 
+             alt="Magyar bemutató"><br/>
+        Magyar bemutató
+      </a>
+    </td>
+    <td>
+      <a href="https://www.youtube.com/watch?v=qRj7CoxSkOw" target="_blank">
+        <img src="https://img.youtube.com/vi/qRj7CoxSkOw/0.jpg" width="300"
+             alt="English demo"><br/>
+        English demo
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://www.youtube.com/watch?v=Uer_qGa1TC0" target="_blank">
+        <img src="https://img.youtube.com/vi/Uer_qGa1TC0/0.jpg" width="300"
+             alt="Demonstrație Română"><br/>
+        Demonstrație Română
+      </a>
+    </td>
+    <td>
+      <a href="https://www.youtube.com/watch?v=3oHuoYVxqEc" target="_blank">
+        <img src="https://img.youtube.com/vi/3oHuoYVxqEc/0.jpg" width="300"
+             alt="Deutsch Demo"><br/>
+        Deutsch Demo
+      </a>
+    </td>
+  </tr>
+</table>
+</div>
+--
 
 ## ⚙️ How context works
 
@@ -101,11 +140,14 @@ ai chat features, start new chat ui, regenerate ai responses, stop ai response, 
 
 Here are the main tools and frameworks used in this project, along with their official documentation links:
 
-- [Angular](https://angular.io/docs) – Frontend framework
-- [Angular Material](https://material.angular.io/components/categories) – UI components for Angular
-- [Tailwind CSS](https://tailwindcss.com/docs) – Utility-first CSS framework
-- [Node.js](https://nodejs.org/en/docs/) – JavaScript runtime environment
-- [Docker Desktop](https://docs.docker.com/desktop/) – Containerization platform
+- [Angular](https://angular.dev) – Frontend framework
+- [Angular Material](https://material.angular.dev) – UI components for Angular
+- [Tailwind CSS](https://tailwindcss.com) – Utility-first CSS framework
+- [Node.js](https://nodejs.org) – JavaScript runtime environment
+- [Docker](https://www.docker.com/) – Containerization platform
 - [Ollama](https://ollama.com/) – Local AI model runner
-- [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) – API reference for Ollama  
+- [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) – API reference for Ollama
 
+##  ❓ Mermaid & KaTeX syntax support
+- [Mermaid docs](https://mermaid.js.org/intro) – Diagramming and visualization tool
+- [KaTeX docs](https://katex.org/docs/supported.html) – High‑performance math typesetting library
