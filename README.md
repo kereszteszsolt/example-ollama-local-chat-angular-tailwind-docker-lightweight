@@ -32,6 +32,45 @@ It allows you to chat with locally installed Ollama models, keeping context duri
 - Detects installed Ollama models and lets you switch between them  
 
 ---
+## 🎥 YouTube Demos
+
+<div align="center">
+<table>
+  <tr></tr>
+    <td>
+      <a href="https://www.youtube.com/watch?v=r2X0joUIEbE" target="_blank">
+        <img src="https://img.youtube.com/vi/r2X0joUIEbE/0.jpg" width="300" 
+             alt="Magyar bemutató"><br/>
+        Magyar bemutató
+      </a>
+    </td>
+    <td>
+      <a href="https://www.youtube.com/watch?v=qRj7CoxSkOw" target="_blank">
+        <img src="https://img.youtube.com/vi/qRj7CoxSkOw/0.jpg" width="300"
+             alt="English demo"><br/>
+        English demo
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://www.youtube.com/watch?v=Uer_qGa1TC0" target="_blank">
+        <img src="https://img.youtube.com/vi/Uer_qGa1TC0/0.jpg" width="300"
+             alt="Demonstrație Română"><br/>
+        Demonstrație Română
+      </a>
+    </td>
+    <td>
+      <a href="https://www.youtube.com/watch?v=3oHuoYVxqEc" target="_blank">
+        <img src="https://img.youtube.com/vi/3oHuoYVxqEc/0.jpg" width="300"
+             alt="Deutsch Demo"><br/>
+        Deutsch Demo
+      </a>
+    </td>
+  </tr>
+</table>
+</div>
+--
 
 ## ⚙️ How context works
 
@@ -112,4 +151,3 @@ Here are the main tools and frameworks used in this project, along with their of
 ##  ❓ Mermaid & KaTeX syntax support
 - [Mermaid docs](https://mermaid.js.org/intro) – Diagramming and visualization tool
 - [KaTeX docs](https://katex.org/docs/supported.html) – High‑performance math typesetting library
-
