@@ -24,7 +24,8 @@ It allows you to chat with locally installed Ollama models, keeping context duri
   - Start a new chat  
   - Regenerate responses  
   - Copy answers or code snippets  
-  - Stop response generation  
+  - Stop response generation
+  - Thinking mode
 - Supports:
   - **Markdown** (bold, italics, headings, lists, tables, etc.)  
   - **Mermaid diagrams**  
