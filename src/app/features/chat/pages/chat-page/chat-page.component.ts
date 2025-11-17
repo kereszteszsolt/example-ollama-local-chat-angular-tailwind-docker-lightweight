@@ -18,6 +18,7 @@ export class ChatPageComponent implements AfterViewChecked, OnInit {
   messages = this.ollamaService.messageHistoryList;
   partialResponse = this.ollamaService.partialResponse;
   isLoading = this.ollamaService.isLoadingResponse;
+  partialThinking = this.ollamaService.partialThinking;
 
   ngAfterViewChecked() {
     this.scrollToBottom();
@@ -35,7 +36,13 @@ export class ChatPageComponent implements AfterViewChecked, OnInit {
   }
 
   onSendMessage(message: string) {
-    this.ollamaService.sendChatMessage(message);
+    try {
+      const parsed = JSON.parse(message);
+      this.ollamaService.sendChatMessage(parsed.content, parsed.think === true);
+    } catch {
+      // Fallback for older emitters
+      this.ollamaService.sendChatMessage(message);
+    }
   }
 
   onAbortMessage() {

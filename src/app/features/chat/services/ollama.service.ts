@@ -13,6 +13,7 @@ export class OllamaService {
   private selectedModel = signal<AiModelDto | null>(null);
   private messageHistory = signal<Message[]>([]);
   private currentResponse = signal<string>('');
+  private currentThinking = signal<string>('');
   private chatSubscription: Subscription | null = null;
   private loadingResponse = signal<boolean>(false);
   private systemPrompts = signal<SystemMessage[]>([]);
@@ -65,6 +66,10 @@ export class OllamaService {
     return this.currentResponse;
   }
 
+  get partialThinking() {
+    return this.currentThinking;
+  }
+
   get isLoadingResponse() {
     return this.loadingResponse;
   }
@@ -81,42 +86,48 @@ export class OllamaService {
   regenerateResponse(ref_id: string) {
     let message = this.messageHistory().find(m => m.req_id === ref_id);
     if (message) {
-      this.sendChatMessage(message.content);
+      this.sendChatMessage(message.content, message.think === true);
     }
   }
 
-  sendChatMessage(userInput: string) {
+  sendChatMessage(userInput: string, think: boolean = false) {
     const req_id = crypto.randomUUID();
     this.loadingResponse.set(true);
     let responseMessage = '';
     // Add user message to history
-    this.messageHistory.set([...this.messageHistory(), {role: 'user', content: userInput, req_id: req_id}]);
+    this.messageHistory.set([...this.messageHistory(), {role: 'user', content: userInput, req_id: req_id, think: think}]);
     let messages: ReqMessage[] = [];
     messages.push(
       ...this.systemPrompts()
         .filter((sp: SystemMessage) => sp.active)
         .map((sp: SystemMessage) => ({ role: sp.role, content: sp.content }))
     );
-    // Add all previous messages
+    // Add all previous messages (including latest with think flag if enabled)
     messages.push(...this.messageHistory());
     const modelName = this.selectedModel()?.name ?? '';
-    this.chatSubscription = this.ollamaApiService.sendChatMessage(modelName, messages).subscribe({
+    this.chatSubscription = this.ollamaApiService.sendChatMessage(modelName, messages, true, think).subscribe({
       next: (event) => {
         if (event.type === 3) {
           const jsonResponse = this.processStreamResponse(event.partialText);
           responseMessage = jsonResponse;
           this.currentResponse.set(responseMessage);
           console.log('OllamaService: Received response', jsonResponse);
+
+          const thinkingResponse = this.processStreamThinking(event.partialText);
+          this.currentThinking.set(thinkingResponse);
+          console.log('OllamaService: Received thinking', thinkingResponse);
         }
         if (event.type === 4) {
           console.log('OllamaService: Response completed 4', event);
           this.messageHistory.set([...this.messageHistory(), {
             role: 'assistant',
             content: this.currentResponse(),
+            thinking: this.currentThinking(),
             total_duration: this.getTotalDuration(event.body),
             ref_id: req_id
           }]);
           this.currentResponse.set('');
+          this.currentThinking.set('');
           this.loadingResponse.set(false);
         }
       },
@@ -134,6 +145,19 @@ export class OllamaService {
       if (substr !== '') {
         const chunk = JSON.parse(substr);
         return chunk.message.content;
+      }
+    });
+
+    return jsonObjects.join('');
+  }
+
+  processStreamThinking(chunk: string) {
+    console.log('OllamaService: Processing stream thinking', chunk);
+    const substrings = chunk.split('\n');
+    const jsonObjects = substrings.map((substr) => {
+      if (substr !== '') {
+        const chunk = JSON.parse(substr);
+        return chunk.message.thinking;
       }
     });
 
@@ -168,5 +192,6 @@ export class OllamaService {
     this.abortChatMessage();
     this.messageHistory.set([]);
     this.currentResponse.set('');
+    this.currentThinking.set('');
   }
 }

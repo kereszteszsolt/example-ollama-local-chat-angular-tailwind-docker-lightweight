@@ -21,11 +21,12 @@ export class OllamaApiService extends BaseApiService{
     return this.http.get<{models: AiModelDto[]}>(`${this.getUrl()}/tags`);
   }
 
-  sendChatMessage(model: string, messages: Message[], stream: boolean = true): Observable<any> {
+  sendChatMessage(model: string, messages: Message[], stream: boolean = true, think: boolean = false): Observable<any> {
     const reqData = {
       model: model,
       messages: messages,
-      stream: stream
+      stream: stream,
+      think: think
     };
     return this.http.post(`${this.getUrl()}/chat`, reqData, {
       responseType: 'text' as 'json',

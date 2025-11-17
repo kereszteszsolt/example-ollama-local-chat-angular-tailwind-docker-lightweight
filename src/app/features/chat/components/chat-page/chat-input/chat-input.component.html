@@ -8,7 +8,7 @@
     [disabled]="isLoading"
   ></textarea>
   <div class="flex flex-row justify-between gap-2">
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-row gap-2 items-center">
       <button mat-icon-button (click)="onNewChat()" [disabled]="isLoading || !hasHistory" matTooltip="Start new chat">
         <mat-icon class="text-xs">add</mat-icon>
       </button>
@@ -18,8 +18,11 @@
       <button mat-icon-button [disabled]="isLoading" (click)="openSystemPromptSettings()" matTooltip="Show system prompts">
         <mat-icon class="text-xs">description</mat-icon>
       </button>
+      <mat-slide-toggle color="primary" [(ngModel)]="thinkEnabled" [disabled]="isLoading" class="scale-75 -mx-2 flex items-center relative top-[3px] leading-none" matTooltip="Enable or disable 'Thinking' feature">
+        Thinking
+      </mat-slide-toggle>
     </div>
-    <div>
+    <div class="flex flex-row gap-4 items-center">
       @if (isLoading) {
         <button mat-icon-button (click)="onAbort()" matTooltip="Abort">
           <mat-icon class="text-xs">stop</mat-icon>

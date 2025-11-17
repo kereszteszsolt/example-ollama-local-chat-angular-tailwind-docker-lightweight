@@ -5,6 +5,25 @@
       ? 'ml-10 border-1 rounded-tl-lg rounded-tr-lg rounded-bl-lg bg-[var(--neutral-color)] w-auto p-2'
       : 'mr-10 w-full'"
   >
+    @if (message.role === 'assistant' && message.thinking) {
+      <div class="mb-2 rounded-md p-2 thinking-box">
+        <div class="flex items-center justify-between mb-1">
+          <div class="text-xs uppercase tracking-wide thinking-title">Thinking</div>
+          <button mat-icon-button class="!h-6 !w-6" (click)="toggleThinkingVisibility()" [matTooltip]="showThinkingExpanded ? 'Hide thinking' : 'Show thinking'">
+            <mat-icon class="text-xs">{{ showThinkingExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+        @if (showThinkingExpanded) {
+          <markdown
+            [data]="message.thinking"
+            katex
+            mermaid
+            [mermaidOptions] ="{ theme: 'forest' }"
+          ></markdown>
+        }
+      </div>
+      <div class="h-px w-full bg-gray-200 my-2"></div>
+    }
     <markdown
       [data]="message.content"
       katex

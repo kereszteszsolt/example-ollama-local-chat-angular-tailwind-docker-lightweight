@@ -1,6 +1,8 @@
 export interface ReqMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
+  thinking?: string;
+  think?: boolean | true;
 }
 
 export interface Message extends ReqMessage {
