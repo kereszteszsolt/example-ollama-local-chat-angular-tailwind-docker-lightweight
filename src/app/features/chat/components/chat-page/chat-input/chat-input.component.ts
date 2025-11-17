@@ -6,7 +6,7 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SystemPromptSettingsComponent} from '../../../dialogs/system-prompt-settings/system-prompt-settings.component';
 import {MatDialog} from '@angular/material/dialog';
-import {SystemMessage} from '../../../models/message.model';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'ollama-chat-chat-input',
@@ -15,7 +15,8 @@ import {SystemMessage} from '../../../models/message.model';
     MatIcon,
     FormsModule,
     CdkTextareaAutosize,
-    MatTooltip
+    MatTooltip,
+    MatSlideToggle
   ],
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
@@ -29,10 +30,13 @@ export class ChatInputComponent {
   private dialog = inject(MatDialog);
 
   currentMessage: string = '';
+  thinkEnabled: boolean = false;
 
   onSendCurrentMessage() {
     if (this.currentMessage.trim()) {
-      this.sendMessage.emit(this.currentMessage);
+      // Emit a JSON-encoded payload to preserve backward compatibility in event signature
+      // The parent will parse and route to service
+      this.sendMessage.emit(JSON.stringify({ content: this.currentMessage, think: this.thinkEnabled }));
       this.currentMessage = '';
     }
   }

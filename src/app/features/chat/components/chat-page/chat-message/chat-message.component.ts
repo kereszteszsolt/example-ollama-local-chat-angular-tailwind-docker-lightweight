@@ -25,12 +25,18 @@ export class ChatMessageComponent implements OnInit {
   @Input({ required: true }) hideToolbar: boolean = false;
   @Output() regenerate: EventEmitter<string> = new EventEmitter<string>();
 
+  showThinkingExpanded = true;
+
   ngOnInit(): void {
     (window as any).Prism.plugins.autoloader.languages_path = 'prismjs-components/';
   }
 
+  toggleThinkingVisibility(): void {
+    this.showThinkingExpanded = !this.showThinkingExpanded;
+  }
+
   copyContentToClipboard(content: string): void {
-    navigator.clipboard.writeText(content).then(r => 'Copied to clipboard!').catch(err => {
+    navigator.clipboard.writeText(content).then(() => 'Copied to clipboard!').catch(err => {
       console.error('Failed to copy text: ', err);
       alert('Failed to copy text to clipboard.');
     });
